@@ -13,9 +13,9 @@ python-dotenv==1.0.1
 sqlalchemy==2.0.35
 
 # AI and LangChain - Latest versions compatible with numpy 2.x and Python 3.13
-langchain-core==0.2.38
-langchain-openai==0.1.23
-langchain-google-genai==1.0.10
+langchain-core==0.3.0
+langchain-openai==0.2.0
+langchain-google-genai==2.0.0
 langgraph==0.2.0
 openai==1.50.0
 google-generativeai==0.7.2
