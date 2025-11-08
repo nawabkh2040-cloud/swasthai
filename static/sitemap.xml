@@ -60,4 +60,68 @@
         <priority>0.6</priority>
     </url>
     
+    <!-- About Us Page -->
+    <url>
+        <loc>https://www.swasthai.live/about</loc>
+        <lastmod>2025-11-08</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    
+    <!-- Contact Page -->
+    <url>
+        <loc>https://www.swasthai.live/contact</loc>
+        <lastmod>2025-11-08</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    
+    <!-- Careers Page -->
+    <url>
+        <loc>https://www.swasthai.live/careers</loc>
+        <lastmod>2025-11-08</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    
+    <!-- Privacy Policy Page -->
+    <url>
+        <loc>https://www.swasthai.live/privacy</loc>
+        <lastmod>2025-11-08</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    
+    <!-- Terms of Service Page -->
+    <url>
+        <loc>https://www.swasthai.live/terms</loc>
+        <lastmod>2025-11-08</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    
+    <!-- Disclaimer Page -->
+    <url>
+        <loc>https://www.swasthai.live/disclaimer</loc>
+        <lastmod>2025-11-08</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    
+    <!-- Help Center Page -->
+    <url>
+        <loc>https://www.swasthai.live/help</loc>
+        <lastmod>2025-11-08</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    
+    <!-- FAQs Page -->
+    <url>
+        <loc>https://www.swasthai.live/faq</loc>
+        <lastmod>2025-11-08</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    
 </urlset>

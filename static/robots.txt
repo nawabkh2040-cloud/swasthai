@@ -5,11 +5,24 @@
 User-agent: *
 Allow: /
 
+# Explicitly allow important pages
+Allow: /about
+Allow: /contact
+Allow: /careers
+Allow: /privacy
+Allow: /terms
+Allow: /disclaimer
+Allow: /help
+Allow: /faq
+Allow: /login
+Allow: /signup
+
 # Disallow admin and private areas
 Disallow: /admin/
 Disallow: /api/
 Disallow: /__pycache__/
 Disallow: /SwasthAI/
+Disallow: /chat
 
 # Allow CSS and JS for better rendering
 Allow: /static/css/
