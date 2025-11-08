@@ -720,6 +720,19 @@
             this.style.height = 'auto';
             this.style.height = Math.min(this.scrollHeight, 120) + 'px';
         });
+        
+        // Handle Enter and Shift+Enter
+        textarea.addEventListener('keydown', function(e) {
+            // If Enter is pressed without Shift
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault(); // Prevent default new line
+                // Trigger form submit
+                const form = document.getElementById('chatForm');
+                form.dispatchEvent(new Event('submit'));
+            }
+            // If Shift+Enter is pressed, allow default behavior (new line)
+            // No need to do anything, browser will handle it
+        });
     </script>
 </body>
 </html>

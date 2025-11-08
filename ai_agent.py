@@ -57,13 +57,17 @@ def search_wikipedia_medical(query: str) -> str:
         wikipedia = WikipediaQueryRun(
             api_wrapper=WikipediaAPIWrapper(
                 top_k_results=2,
-                doc_content_chars_max=3000
+                doc_content_chars_max=3000,
+                lang="en"
             )
         )
         result = wikipedia.run(query)
+        if not result or "Page" in result and "does not exist" in result:
+            return f"Wikipedia information not available for '{query}'. The page may not exist or there may be a connection issue."
         return f"Wikipedia Medical Info:\n{result}"
     except Exception as e:
-        return f"Unable to search Wikipedia: {str(e)}"
+        error_msg = str(e)
+        return f"Unable to access Wikipedia at the moment: {error_msg}. This could be due to network issues or Wikipedia API limitations. I can still provide general medical information about {query} from my training data."
 
 
 @tool
@@ -274,10 +278,12 @@ YOUR TOOLS & WHEN TO USE THEM:
 IMPORTANT INSTRUCTIONS:
 - ALWAYS use get_emergency_guidance first if symptoms sound serious
 - Use search_medical_info for recent health information
-- Use Wikipedia for comprehensive background on medical conditions
+- Try Wikipedia for comprehensive background, but if it fails, use your built-in medical knowledge
+- If a tool returns an error or "unable to access", continue with your medical knowledge - don't apologize excessively
 - Be proactive in using tools - don't just rely on your training data
 - When multiple tools are relevant, use them to provide comprehensive answers
 - After using tools, synthesize the information in simple, empathetic language
+- If Wikipedia is unavailable, provide detailed information from your training and mention the source limitation once
 
 YOUR APPROACH:
 1. Listen carefully and identify if emergency guidance is needed
