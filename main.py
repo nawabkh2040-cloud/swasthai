@@ -113,6 +113,54 @@ async def sitemap():
     return FileResponse("static/sitemap.xml", media_type="application/xml")
 
 
+@app.get("/about", response_class=HTMLResponse)
+async def about_page(request: Request):
+    """About Us page"""
+    return templates.TemplateResponse("about.html", {"request": request})
+
+
+@app.get("/contact", response_class=HTMLResponse)
+async def contact_page(request: Request):
+    """Contact Us page"""
+    return templates.TemplateResponse("contact.html", {"request": request})
+
+
+@app.get("/careers", response_class=HTMLResponse)
+async def careers_page(request: Request):
+    """Careers page"""
+    return templates.TemplateResponse("careers.html", {"request": request})
+
+
+@app.get("/privacy", response_class=HTMLResponse)
+async def privacy_page(request: Request):
+    """Privacy Policy page"""
+    return templates.TemplateResponse("privacy.html", {"request": request})
+
+
+@app.get("/terms", response_class=HTMLResponse)
+async def terms_page(request: Request):
+    """Terms of Service page"""
+    return templates.TemplateResponse("terms.html", {"request": request})
+
+
+@app.get("/disclaimer", response_class=HTMLResponse)
+async def disclaimer_page(request: Request):
+    """Medical Disclaimer page"""
+    return templates.TemplateResponse("disclaimer.html", {"request": request})
+
+
+@app.get("/help", response_class=HTMLResponse)
+async def help_page(request: Request):
+    """Help Center page"""
+    return templates.TemplateResponse("help.html", {"request": request})
+
+
+@app.get("/faq", response_class=HTMLResponse)
+async def faq_page(request: Request):
+    """FAQs page"""
+    return templates.TemplateResponse("faq.html", {"request": request})
+
+
 # ==================== API ROUTES ====================
 
 @app.post("/api/signup", response_model=Token, status_code=status.HTTP_201_CREATED)

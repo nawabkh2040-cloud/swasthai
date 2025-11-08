@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Frequently Asked Questions - SwasthAI">
+    <meta name="theme-color" content="#1e40af">
+    <title>FAQs - SwasthAI</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/static/images/favicon_io/favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/images/favicon_io/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/images/favicon_io/favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/static/images/favicon_io/apple-touch-icon.png">
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+    
+    <style>
+        :root {
+            --primary: #1e40af;
+            --primary-light: #3b82f6;
+            --secondary: #0f766e;
+            --accent: #dc2626;
+            --dark: #0f172a;
+        }
+        
+        body {
+            font-family: 'Segoe UI', 'Helvetica Neue', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        .navbar {
+            padding: 1rem 0;
+            background: white !important;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        }
+        
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary) !important;
+        }
+        
+        .navbar-brand i {
+            color: var(--accent);
+        }
+        
+        .hero-section {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 5rem 0 3rem;
+            margin-top: 76px;
+        }
+        
+        .hero-section h1 {
+            font-size: 3rem;
+            font-weight: 800;
+        }
+        
+        .faq-section {
+            padding: 3rem 0;
+        }
+        
+        .accordion-button:not(.collapsed) {
+            background-color: #eff6ff;
+            color: var(--primary);
+        }
+        
+        .accordion-button:focus {
+            box-shadow: 0 0 0 0.25rem rgba(30, 64, 175, 0.25);
+        }
+        
+        .accordion-item {
+            border: 1px solid #e2e8f0;
+            margin-bottom: 1rem;
+            border-radius: 10px !important;
+            overflow: hidden;
+        }
+        
+        .accordion-button {
+            font-weight: 600;
+        }
+        
+        .category-badge {
+            background: var(--primary);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            display: inline-block;
+            margin-bottom: 1.5rem;
+        }
+        
+        .footer {
+            background: #0f172a;
+            color: #cbd5e1;
+            padding: 3rem 0 1rem;
+        }
+        
+        .footer a {
+            color: #cbd5e1;
+            text-decoration: none;
+        }
+        
+        .footer a:hover {
+            color: var(--primary-light);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="/">
+                <i class="bi bi-heart-pulse-fill me-2"></i>
+                SwasthAI
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/about">About</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="/faq">FAQs</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container text-center">
+            <h1>Frequently Asked Questions</h1>
+            <p class="lead">Find quick answers to common questions about SwasthAI</p>
+        </div>
+    </section>
+
+    <!-- FAQ Section - General -->
+    <section class="faq-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-9 mx-auto">
+                    <span class="category-badge" id="general">General Questions</span>
+                    
+                    <div class="accordion" id="generalAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#general1">
+                                    What is SwasthAI?
+                                </button>
+                            </h2>
+                            <div id="general1" class="accordion-collapse collapse show" data-bs-parent="#generalAccordion">
+                                <div class="accordion-body">
+                                    SwasthAI is an AI-powered healthcare assistant designed to provide general health information and guidance to people across India, especially in rural and underserved areas. We use advanced AI technology to help users understand symptoms, learn about health conditions, and know when to seek professional medical care.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#general2">
+                                    Is SwasthAI free to use?
+                                </button>
+                            </h2>
+                            <div id="general2" class="accordion-collapse collapse" data-bs-parent="#generalAccordion">
+                                <div class="accordion-body">
+                                    Yes! SwasthAI is completely free to use. Our mission is to make healthcare information accessible to everyone, regardless of their economic status.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#general3">
+                                    Can SwasthAI replace my doctor?
+                                </button>
+                            </h2>
+                            <div id="general3" class="accordion-collapse collapse" data-bs-parent="#generalAccordion">
+                                <div class="accordion-body">
+                                    <strong>No.</strong> SwasthAI is NOT a substitute for professional medical advice, diagnosis, or treatment. We provide general health information and guidance, but you should always consult with qualified healthcare professionals for medical decisions. See our <a href="/disclaimer">Medical Disclaimer</a> for more information.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Account & Login -->
+                    <span class="category-badge mt-5 d-block" id="account">Account & Login</span>
+                    
+                    <div class="accordion" id="accountAccordion">
+                        <div class="accordion-item" id="create-account">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#account1">
+                                    How do I create an account?
+                                </button>
+                            </h2>
+                            <div id="account1" class="accordion-collapse collapse" data-bs-parent="#accountAccordion">
+                                <div class="accordion-body">
+                                    Creating an account is easy:
+                                    <ol>
+                                        <li>Click "Get Started" or "Sign Up" on the homepage</li>
+                                        <li>Enter your name, email address, and create a password</li>
+                                        <li>Click "Sign Up"</li>
+                                        <li>You're ready to start chatting!</li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item" id="forgot-password">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#account2">
+                                    I forgot my password. What should I do?
+                                </button>
+                            </h2>
+                            <div id="account2" class="accordion-collapse collapse" data-bs-parent="#accountAccordion">
+                                <div class="accordion-body">
+                                    Currently, password reset functionality is under development. Please contact our support team at <a href="mailto:support@swasthai.live">support@swasthai.live</a> for assistance.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item" id="delete-account">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#account3">
+                                    How do I delete my account?
+                                </button>
+                            </h2>
+                            <div id="account3" class="accordion-collapse collapse" data-bs-parent="#accountAccordion">
+                                <div class="accordion-body">
+                                    To delete your account and all associated data, please contact us at <a href="mailto:privacy@swasthai.live">privacy@swasthai.live</a> with your request. We'll process your request within 7 business days.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Using SwasthAI -->
+                    <span class="category-badge mt-5 d-block" id="using">Using SwasthAI</span>
+                    
+                    <div class="accordion" id="usingAccordion">
+                        <div class="accordion-item" id="ask-questions">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#using1">
+                                    How should I ask questions?
+                                </button>
+                            </h2>
+                            <div id="using1" class="accordion-collapse collapse" data-bs-parent="#usingAccordion">
+                                <div class="accordion-body">
+                                    Be as specific and detailed as possible. For example:
+                                    <ul>
+                                        <li>✅ Good: "I've had a headache for 3 days, it's on the right side, and bright light makes it worse."</li>
+                                        <li>❌ Less helpful: "My head hurts."</li>
+                                    </ul>
+                                    You can ask in English, Hindi, or a mix of both (Hinglish).
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item" id="languages">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#using2">
+                                    What languages are supported?
+                                </button>
+                            </h2>
+                            <div id="using2" class="accordion-collapse collapse" data-bs-parent="#usingAccordion">
+                                <div class="accordion-body">
+                                    SwasthAI currently supports English and Hindi. You can also use a mix of both languages (Hinglish), which is common in India.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item" id="response-time">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#using3">
+                                    How long does it take to get a response?
+                                </button>
+                            </h2>
+                            <div id="using3" class="accordion-collapse collapse" data-bs-parent="#usingAccordion">
+                                <div class="accordion-body">
+                                    Our AI typically responds within 5 seconds. Response times may vary depending on the complexity of your question and server load.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item" id="chat-history">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#using4">
+                                    Can I view my previous conversations?
+                                </button>
+                            </h2>
+                            <div id="using4" class="accordion-collapse collapse" data-bs-parent="#usingAccordion">
+                                <div class="accordion-body">
+                                    Yes! Your chat history is saved in your account. You can access it anytime by logging in and viewing the conversation history in the chat interface.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Privacy & Security -->
+                    <span class="category-badge mt-5 d-block" id="privacy">Privacy & Security</span>
+                    
+                    <div class="accordion" id="privacyAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#privacy1">
+                                    Is my health information private?
+                                </button>
+                            </h2>
+                            <div id="privacy1" class="accordion-collapse collapse" data-bs-parent="#privacyAccordion">
+                                <div class="accordion-body">
+                                    Yes. We take your privacy seriously. All your data is encrypted and stored securely. We never share your personal health information with third parties without your consent. Read our <a href="/privacy">Privacy Policy</a> for full details.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#privacy2">
+                                    Who can see my conversations?
+                                </button>
+                            </h2>
+                            <div id="privacy2" class="accordion-collapse collapse" data-bs-parent="#privacyAccordion">
+                                <div class="accordion-body">
+                                    Only you can see your conversations. Our team may access anonymized data for improving the AI, but personal identifying information is never shared or made public.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Technical Issues -->
+                    <span class="category-badge mt-5 d-block" id="technical">Technical Issues</span>
+                    
+                    <div class="accordion" id="technicalAccordion">
+                        <div class="accordion-item" id="chat-not-working">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#tech1">
+                                    The chat is not working. What should I do?
+                                </button>
+                            </h2>
+                            <div id="tech1" class="accordion-collapse collapse" data-bs-parent="#technicalAccordion">
+                                <div class="accordion-body">
+                                    Try these steps:
+                                    <ol>
+                                        <li>Refresh the page (Ctrl+R or Cmd+R)</li>
+                                        <li>Clear your browser cache and cookies</li>
+                                        <li>Try a different browser</li>
+                                        <li>Check your internet connection</li>
+                                        <li>If the problem persists, contact support at <a href="mailto:support@swasthai.live">support@swasthai.live</a></li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#tech2">
+                                    Which browsers are supported?
+                                </button>
+                            </h2>
+                            <div id="tech2" class="accordion-collapse collapse" data-bs-parent="#technicalAccordion">
+                                <div class="accordion-body">
+                                    SwasthAI works best on modern browsers:
+                                    <ul>
+                                        <li>Google Chrome (recommended)</li>
+                                        <li>Mozilla Firefox</li>
+                                        <li>Safari</li>
+                                        <li>Microsoft Edge</li>
+                                    </ul>
+                                    Make sure your browser is up to date for the best experience.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Still Have Questions -->
+                    <div class="alert alert-info mt-5">
+                        <h4><i class="bi bi-question-circle me-2"></i>Still have questions?</h4>
+                        <p class="mb-0">Can't find what you're looking for? <a href="/contact" class="alert-link">Contact our support team</a> and we'll be happy to help!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <h5 class="mb-3"><i class="bi bi-heart-pulse-fill me-2"></i>SwasthAI</h5>
+                    <p>Making healthcare accessible to everyone through AI technology.</p>
+                </div>
+                <div class="col-lg-4">
+                    <h6 class="mb-3">Quick Links</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="/">Home</a></li>
+                        <li class="mb-2"><a href="/about">About Us</a></li>
+                        <li class="mb-2"><a href="/contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4">
+                    <h6 class="mb-3">Legal</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="/privacy">Privacy Policy</a></li>
+                        <li class="mb-2"><a href="/terms">Terms of Service</a></li>
+                        <li class="mb-2"><a href="/disclaimer">Disclaimer</a></li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="my-4 border-secondary">
+            <div class="text-center">
+                <p class="mb-0">&copy; 2025 SwasthAI. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

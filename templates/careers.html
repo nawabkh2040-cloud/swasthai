@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Careers at SwasthAI - Join our mission">
+    <meta name="theme-color" content="#1e40af">
+    <title>Careers - SwasthAI</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/static/images/favicon_io/favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/images/favicon_io/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/images/favicon_io/favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/static/images/favicon_io/apple-touch-icon.png">
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+    
+    <style>
+        :root {
+            --primary: #1e40af;
+            --primary-light: #3b82f6;
+            --secondary: #0f766e;
+            --accent: #dc2626;
+            --dark: #0f172a;
+        }
+        
+        body {
+            font-family: 'Segoe UI', 'Helvetica Neue', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        .navbar {
+            padding: 1rem 0;
+            background: white !important;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        }
+        
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary) !important;
+        }
+        
+        .navbar-brand i {
+            color: var(--accent);
+        }
+        
+        .hero-section {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 5rem 0 3rem;
+            margin-top: 76px;
+        }
+        
+        .hero-section h1 {
+            font-size: 3rem;
+            font-weight: 800;
+        }
+        
+        .job-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+            margin-bottom: 1.5rem;
+        }
+        
+        .job-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+        }
+        
+        .badge-custom {
+            background: #eff6ff;
+            color: var(--primary);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            border: none;
+            padding: 0.75rem 2rem;
+            font-weight: 600;
+        }
+        
+        .btn-primary:hover {
+            background: var(--primary-light);
+        }
+        
+        .footer {
+            background: #0f172a;
+            color: #cbd5e1;
+            padding: 3rem 0 1rem;
+        }
+        
+        .footer a {
+            color: #cbd5e1;
+            text-decoration: none;
+        }
+        
+        .footer a:hover {
+            color: var(--primary-light);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="/">
+                <i class="bi bi-heart-pulse-fill me-2"></i>
+                SwasthAI
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/about">About</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="/careers">Careers</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container text-center">
+            <h1>Join Our Mission</h1>
+            <p class="lead">Help us make healthcare accessible to millions across India</p>
+        </div>
+    </section>
+
+    <!-- Why Join Section -->
+    <section class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-5">Why Join SwasthAI?</h2>
+            <div class="row g-4">
+                <div class="col-md-3">
+                    <div class="text-center">
+                        <i class="bi bi-rocket-takeoff display-4 text-primary mb-3"></i>
+                        <h4>Make an Impact</h4>
+                        <p>Work on technology that directly improves lives</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="text-center">
+                        <i class="bi bi-people display-4 text-primary mb-3"></i>
+                        <h4>Great Team</h4>
+                        <p>Collaborate with passionate, talented individuals</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="text-center">
+                        <i class="bi bi-graph-up display-4 text-primary mb-3"></i>
+                        <h4>Growth</h4>
+                        <p>Continuous learning and career development</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="text-center">
+                        <i class="bi bi-lightning display-4 text-primary mb-3"></i>
+                        <h4>Innovation</h4>
+                        <p>Work with cutting-edge AI technology</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Open Positions -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <h2 class="text-center mb-5">Open Positions</h2>
+            
+            <div class="job-card">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <div>
+                        <h3>Full Stack Developer</h3>
+                        <p class="text-muted mb-2"><i class="bi bi-geo-alt-fill me-2"></i>Remote / Hybrid</p>
+                    </div>
+                    <span class="badge-custom">Full Time</span>
+                </div>
+                <p>We're looking for an experienced full stack developer to help build and scale our healthcare platform. Experience with Python, FastAPI, React, and cloud technologies is a plus.</p>
+                <div class="d-flex gap-2 mb-3">
+                    <span class="badge bg-light text-dark">Python</span>
+                    <span class="badge bg-light text-dark">FastAPI</span>
+                    <span class="badge bg-light text-dark">React</span>
+                    <span class="badge bg-light text-dark">AI/ML</span>
+                </div>
+                <a href="/contact" class="btn btn-primary btn-sm">Apply Now</a>
+            </div>
+
+            <div class="job-card">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <div>
+                        <h3>AI/ML Engineer</h3>
+                        <p class="text-muted mb-2"><i class="bi bi-geo-alt-fill me-2"></i>Remote / Hybrid</p>
+                    </div>
+                    <span class="badge-custom">Full Time</span>
+                </div>
+                <p>Join our AI team to improve our medical AI assistant. Experience with LangChain, LangGraph, and healthcare AI applications preferred.</p>
+                <div class="d-flex gap-2 mb-3">
+                    <span class="badge bg-light text-dark">Machine Learning</span>
+                    <span class="badge bg-light text-dark">LangChain</span>
+                    <span class="badge bg-light text-dark">NLP</span>
+                    <span class="badge bg-light text-dark">Python</span>
+                </div>
+                <a href="/contact" class="btn btn-primary btn-sm">Apply Now</a>
+            </div>
+
+            <div class="job-card">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <div>
+                        <h3>Healthcare Content Specialist</h3>
+                        <p class="text-muted mb-2"><i class="bi bi-geo-alt-fill me-2"></i>Remote</p>
+                    </div>
+                    <span class="badge-custom">Full Time</span>
+                </div>
+                <p>Help us create accurate, accessible healthcare content. Medical background (MBBS/nursing) with ability to explain complex medical concepts in simple language.</p>
+                <div class="d-flex gap-2 mb-3">
+                    <span class="badge bg-light text-dark">Medical Knowledge</span>
+                    <span class="badge bg-light text-dark">Content Writing</span>
+                    <span class="badge bg-light text-dark">Hindi/English</span>
+                </div>
+                <a href="/contact" class="btn btn-primary btn-sm">Apply Now</a>
+            </div>
+
+            <div class="text-center mt-5">
+                <p class="lead">Don't see a role that fits?</p>
+                <p>We're always looking for talented people. Send us your resume at <a href="mailto:careers@swasthai.live">careers@swasthai.live</a></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <h5 class="mb-3"><i class="bi bi-heart-pulse-fill me-2"></i>SwasthAI</h5>
+                    <p>Making healthcare accessible to everyone through AI technology.</p>
+                </div>
+                <div class="col-lg-4">
+                    <h6 class="mb-3">Quick Links</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="/">Home</a></li>
+                        <li class="mb-2"><a href="/about">About Us</a></li>
+                        <li class="mb-2"><a href="/contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4">
+                    <h6 class="mb-3">Legal</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="/privacy">Privacy Policy</a></li>
+                        <li class="mb-2"><a href="/terms">Terms of Service</a></li>
+                        <li class="mb-2"><a href="/disclaimer">Disclaimer</a></li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="my-4 border-secondary">
+            <div class="text-center">
+                <p class="mb-0">&copy; 2025 SwasthAI. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Medical Disclaimer - SwasthAI">
+    <meta name="theme-color" content="#1e40af">
+    <title>Medical Disclaimer - SwasthAI</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/static/images/favicon_io/favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/images/favicon_io/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/images/favicon_io/favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/static/images/favicon_io/apple-touch-icon.png">
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+    
+    <style>
+        :root {
+            --primary: #1e40af;
+            --primary-light: #3b82f6;
+            --secondary: #0f766e;
+            --accent: #dc2626;
+            --dark: #0f172a;
+        }
+        
+        body {
+            font-family: 'Segoe UI', 'Helvetica Neue', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--dark);
+            line-height: 1.8;
+        }
+        
+        .navbar {
+            padding: 1rem 0;
+            background: white !important;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        }
+        
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary) !important;
+        }
+        
+        .navbar-brand i {
+            color: var(--accent);
+        }
+        
+        .hero-section {
+            background: linear-gradient(135deg, var(--accent) 0%, #b91c1c 100%);
+            color: white;
+            padding: 4rem 0 2rem;
+            margin-top: 76px;
+        }
+        
+        .content-section {
+            padding: 3rem 0;
+        }
+        
+        .content-section h2 {
+            color: var(--primary);
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .alert-danger-custom {
+            background: #fef2f2;
+            border-left: 4px solid var(--accent);
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .footer {
+            background: #0f172a;
+            color: #cbd5e1;
+            padding: 3rem 0 1rem;
+        }
+        
+        .footer a {
+            color: #cbd5e1;
+            text-decoration: none;
+        }
+        
+        .footer a:hover {
+            color: var(--primary-light);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="/">
+                <i class="bi bi-heart-pulse-fill me-2"></i>
+                SwasthAI
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/about">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <h1><i class="bi bi-exclamation-triangle-fill me-3"></i>Medical Disclaimer</h1>
+            <p class="lead">Important information about using SwasthAI</p>
+        </div>
+    </section>
+
+    <!-- Content Section -->
+    <section class="content-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-9 mx-auto">
+                    <div class="alert-danger-custom">
+                        <h3><i class="bi bi-exclamation-circle-fill me-2"></i>CRITICAL NOTICE</h3>
+                        <p class="mb-0"><strong>SwasthAI is NOT a substitute for professional medical advice, diagnosis, or treatment. This service is an AI-powered informational tool only and should not be used for medical emergencies or as a replacement for consulting with qualified healthcare professionals.</strong></p>
+                    </div>
+
+                    <h2>1. Nature of Service</h2>
+                    <p>SwasthAI is an artificial intelligence-powered healthcare information platform designed to:</p>
+                    <ul>
+                        <li>Provide general health education and information</li>
+                        <li>Assist with understanding common symptoms</li>
+                        <li>Offer guidance on when to seek professional medical care</li>
+                        <li>Answer general health-related questions</li>
+                    </ul>
+                    <p><strong>SwasthAI does NOT:</strong></p>
+                    <ul>
+                        <li>Diagnose medical conditions</li>
+                        <li>Prescribe medications or treatments</li>
+                        <li>Provide emergency medical services</li>
+                        <li>Replace consultations with licensed healthcare providers</li>
+                    </ul>
+
+                    <h2>2. Not Medical Advice</h2>
+                    <p>The information provided by SwasthAI is for educational and informational purposes only. It is not intended to be a substitute for professional medical advice, diagnosis, or treatment. Always seek the advice of your physician or other qualified health provider with any questions you may have regarding a medical condition.</p>
+
+                    <h2>3. No Doctor-Patient Relationship</h2>
+                    <p>Use of SwasthAI does not create a doctor-patient relationship. The AI assistant is not a licensed medical professional and cannot provide personalized medical advice tailored to your specific health situation.</p>
+
+                    <h2>4. Emergency Situations</h2>
+                    <div class="alert alert-danger">
+                        <h4><i class="bi bi-telephone-fill me-2"></i>In Case of Emergency</h4>
+                        <p><strong>If you are experiencing a medical emergency, call your local emergency services immediately (e.g., 108 in India, 911 in USA) or visit the nearest emergency room.</strong></p>
+                        <p class="mb-0">Do not rely on SwasthAI for emergency medical situations including but not limited to:</p>
+                        <ul class="mb-0">
+                            <li>Chest pain or difficulty breathing</li>
+                            <li>Severe bleeding or injuries</li>
+                            <li>Loss of consciousness</li>
+                            <li>Severe allergic reactions</li>
+                            <li>Suspected poisoning or overdose</li>
+                            <li>Stroke symptoms</li>
+                            <li>Severe abdominal pain</li>
+                        </ul>
+                    </div>
+
+                    <h2>5. Accuracy and Completeness</h2>
+                    <p>While we strive to provide accurate and up-to-date health information:</p>
+                    <ul>
+                        <li>Medical knowledge is constantly evolving</li>
+                        <li>AI systems may occasionally provide incomplete or incorrect information</li>
+                        <li>Information may not be applicable to your specific situation</li>
+                        <li>We do not guarantee the accuracy, completeness, or usefulness of any information</li>
+                    </ul>
+
+                    <h2>6. Individual Medical Needs</h2>
+                    <p>Every person's health situation is unique. The information provided by SwasthAI is general in nature and may not be appropriate for your specific circumstances, medical history, or current medications.</p>
+
+                    <h2>7. Never Disregard Professional Medical Advice</h2>
+                    <p><strong>Never disregard professional medical advice or delay in seeking it because of something you have read or learned from SwasthAI.</strong> If you think you may have a medical emergency, call your doctor or emergency services immediately.</p>
+
+                    <h2>8. Medication and Treatment Information</h2>
+                    <p>Information about medications, treatments, or procedures provided by SwasthAI is for educational purposes only. Always consult with your healthcare provider before:</p>
+                    <ul>
+                        <li>Starting or stopping any medication</li>
+                        <li>Changing your treatment plan</li>
+                        <li>Trying any home remedies or alternative treatments</li>
+                    </ul>
+
+                    <h2>9. Limitation of Liability</h2>
+                    <p>SwasthAI and its creators, operators, and affiliates assume no liability for any decisions made or actions taken by users based on information provided through our service. Users are solely responsible for their health decisions and should consult appropriate healthcare professionals.</p>
+
+                    <h2>10. Regional Differences</h2>
+                    <p>Healthcare information, practices, and available treatments may vary by country, region, and healthcare system. Information provided may not be applicable to your specific location or healthcare context.</p>
+
+                    <h2>11. Privacy and Confidentiality</h2>
+                    <p>While we protect your privacy, information shared with SwasthAI is not protected by doctor-patient confidentiality. Do not share sensitive personal health information that you wish to remain completely private.</p>
+
+                    <h2>12. When to Seek Professional Help</h2>
+                    <p>You should consult a healthcare professional if you:</p>
+                    <ul>
+                        <li>Have persistent or worsening symptoms</li>
+                        <li>Are concerned about your health</li>
+                        <li>Need a diagnosis or treatment plan</li>
+                        <li>Are considering changes to your medications or treatment</li>
+                        <li>Have questions about your specific medical condition</li>
+                        <li>Need preventive care or health screenings</li>
+                    </ul>
+
+                    <h2>13. Updates and Changes</h2>
+                    <p>This disclaimer may be updated from time to time. Continued use of SwasthAI constitutes acceptance of the current disclaimer.</p>
+
+                    <div class="alert alert-info mt-4">
+                        <h4><i class="bi bi-info-circle-fill me-2"></i>Remember</h4>
+                        <p class="mb-0">SwasthAI is a tool to help you understand general health information and guide you toward appropriate medical care. It is not a replacement for the expertise, judgment, and care of qualified healthcare professionals. When in doubt, always consult with a real doctor.</p>
+                    </div>
+
+                    <h2>14. Contact Us</h2>
+                    <p>If you have questions about this disclaimer, please contact us at: <a href="/contact">Contact Form</a></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <h5 class="mb-3"><i class="bi bi-heart-pulse-fill me-2"></i>SwasthAI</h5>
+                    <p>Making healthcare accessible to everyone through AI technology.</p>
+                </div>
+                <div class="col-lg-4">
+                    <h6 class="mb-3">Quick Links</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="/">Home</a></li>
+                        <li class="mb-2"><a href="/about">About Us</a></li>
+                        <li class="mb-2"><a href="/contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4">
+                    <h6 class="mb-3">Legal</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="/privacy">Privacy Policy</a></li>
+                        <li class="mb-2"><a href="/terms">Terms of Service</a></li>
+                        <li class="mb-2"><a href="/disclaimer">Disclaimer</a></li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="my-4 border-secondary">
+            <div class="text-center">
+                <p class="mb-0">&copy; 2025 SwasthAI. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

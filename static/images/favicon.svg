@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="heartGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#dc2626;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ef4444;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <!-- Background circle -->
+  <circle cx="50" cy="50" r="48" fill="#ffffff"/>
+  <!-- Heart shape with medical cross -->
+  <path d="M50,85 C50,85 20,65 20,45 C20,30 30,25 40,30 C45,32.5 50,40 50,40 C50,40 55,32.5 60,30 C70,25 80,30 80,45 C80,65 50,85 50,85 Z" fill="url(#heartGradient)"/>
+  <!-- Medical cross/bandage effect -->
+  <rect x="47" y="35" width="6" height="35" fill="#ffffff" opacity="0.4" rx="1"/>
+  <rect x="35" y="47" width="30" height="6" fill="#ffffff" opacity="0.4" rx="1"/>
+</svg>
