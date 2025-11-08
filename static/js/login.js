@@ -9,11 +9,12 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
     const submitBtn = document.getElementById('submitBtn');
     
     // Clear previous messages
-    errorMsg.classList.remove('show');
+    errorMsg.className = '';
+    errorMsg.textContent = '';
     
     // Disable button
     submitBtn.disabled = true;
-    submitBtn.textContent = 'Logging in...';
+    submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Logging in...';
     
     try {
         const response = await fetch('/api/login', {
@@ -33,19 +34,25 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
             // Save token
             localStorage.setItem('token', data.access_token);
             
+            // Show success message
+            errorMsg.className = 'alert alert-success';
+            errorMsg.innerHTML = '<i class="bi bi-check-circle me-2"></i>Login successful! Redirecting...';
+            
             // Redirect to chat
-            window.location.href = '/chat';
+            setTimeout(() => {
+                window.location.href = '/chat';
+            }, 500);
         } else {
-            errorMsg.textContent = data.detail || 'Login failed. Please check your credentials.';
-            errorMsg.classList.add('show');
+            errorMsg.className = 'alert alert-danger';
+            errorMsg.innerHTML = '<i class="bi bi-exclamation-circle me-2"></i>' + (data.detail || 'Login failed. Please check your credentials.');
             submitBtn.disabled = false;
-            submitBtn.textContent = 'Login';
+            submitBtn.innerHTML = '<i class="bi bi-box-arrow-in-right me-2"></i>Login';
         }
     } catch (error) {
         console.error('Login error:', error);
-        errorMsg.textContent = 'Network error. Please check your connection.';
-        errorMsg.classList.add('show');
+        errorMsg.className = 'alert alert-danger';
+        errorMsg.innerHTML = '<i class="bi bi-wifi-off me-2"></i>Network error. Please check your connection.';
         submitBtn.disabled = false;
-        submitBtn.textContent = 'Login';
+        submitBtn.innerHTML = '<i class="bi bi-box-arrow-in-right me-2"></i>Login';
     }
 });

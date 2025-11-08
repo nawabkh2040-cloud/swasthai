@@ -1,112 +1,385 @@
 """
-SwasthAI Medical Assistant powered by LangChain and LangGraph
-This module creates an intelligent AI agent for medical consultation
+Enhanced SwasthAI Medical Assistant with Advanced Tool Calling
+Powered by LangChain, LangGraph, and Gemini with function calling
 """
-from typing import List, Dict, TypedDict, Annotated, Sequence
-from langchain_core.messages import BaseMessage, HumanMessage, AIMessage, SystemMessage
-from langchain_openai import ChatOpenAI
+from typing import List, Dict, TypedDict, Annotated, Sequence, Any
+from langchain_core.messages import BaseMessage, HumanMessage, AIMessage, SystemMessage, ToolMessage
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langgraph.graph import StateGraph, END
-from langgraph.prebuilt import ToolExecutor
+from langgraph.prebuilt import ToolNode
+from langchain_core.tools import tool
+from langchain_community.tools import WikipediaQueryRun
+from langchain_community.utilities import WikipediaAPIWrapper
+from langchain_community.tools import DuckDuckGoSearchRun
 from config import settings
 import operator
+import requests
+import json
 
 
-# System prompt for the medical assistant
-MEDICAL_ASSISTANT_PROMPT = """You are SwasthAI, a compassionate and knowledgeable AI medical assistant designed specifically for rural healthcare in India.
+# ==================== MEDICAL TOOLS ====================
 
-Your Core Responsibilities:
-1. Listen carefully to health concerns and symptoms
-2. Ask relevant follow-up questions to understand the situation better
-3. Provide clear, simple medical guidance in easy-to-understand language
-4. Show empathy and cultural sensitivity
-5. Explain medical terms whenever you use them
+@tool
+def search_medical_info(query: str) -> str:
+    """
+    Search for current medical information, drug interactions, treatment guidelines, 
+    and latest health research from the web.
+    
+    Args:
+        query: Medical topic, symptom, drug name, or health condition to search for
+    
+    Returns:
+        Relevant medical information from reliable sources
+    """
+    try:
+        search = DuckDuckGoSearchRun()
+        # Add medical context to query for better results
+        enhanced_query = f"medical health {query} site:mayoclinic.org OR site:webmd.com OR site:nih.gov OR site:who.int"
+        result = search.run(enhanced_query)
+        return f"Medical Information:\n{result}"
+    except Exception as e:
+        return f"Unable to search medical information: {str(e)}"
 
-Important Guidelines:
-- ALWAYS be supportive and non-judgmental
-- Use simple Hindi-English mix (Hinglish) when helpful
-- For serious symptoms, URGENTLY advise seeing a doctor
-- Never provide definitive diagnoses - offer general guidance only
-- Consider limited healthcare access in rural areas
-- Suggest home remedies when appropriate and safe
-- Be aware of common rural health issues (water-borne diseases, malnutrition, snake bites, etc.)
+
+@tool
+def search_wikipedia_medical(query: str) -> str:
+    """
+    Search Wikipedia for detailed information about diseases, medical conditions,
+    anatomy, medical procedures, and health topics.
+    
+    Args:
+        query: Medical condition, disease, body part, or health topic
+    
+    Returns:
+        Detailed encyclopedic information from Wikipedia
+    """
+    try:
+        wikipedia = WikipediaQueryRun(
+            api_wrapper=WikipediaAPIWrapper(
+                top_k_results=2,
+                doc_content_chars_max=3000
+            )
+        )
+        result = wikipedia.run(query)
+        return f"Wikipedia Medical Info:\n{result}"
+    except Exception as e:
+        return f"Unable to search Wikipedia: {str(e)}"
+
+
+@tool
+def check_drug_interactions(drug_name: str) -> str:
+    """
+    Check for drug interactions, side effects, and basic medication information.
+    Use this when patients mention taking medications or ask about medicines.
+    
+    Args:
+        drug_name: Name of the medication
+    
+    Returns:
+        Information about the drug including common side effects and precautions
+    """
+    try:
+        # Using OpenFDA API for drug information
+        url = f"https://api.fda.gov/drug/label.json?search=openfda.brand_name:{drug_name}&limit=1"
+        response = requests.get(url, timeout=5)
+        
+        if response.status_code == 200:
+            data = response.json()
+            if data.get('results'):
+                result = data['results'][0]
+                info = {
+                    'drug_name': drug_name,
+                    'warnings': result.get('warnings', ['No warnings available'])[0][:500] if result.get('warnings') else 'N/A',
+                    'indications': result.get('indications_and_usage', ['No information available'])[0][:500] if result.get('indications_and_usage') else 'N/A',
+                }
+                return json.dumps(info, indent=2)
+        
+        # Fallback to web search
+        search = DuckDuckGoSearchRun()
+        return search.run(f"{drug_name} medication side effects interactions")
+    except Exception as e:
+        return f"Unable to retrieve drug information for {drug_name}. Please consult a pharmacist."
+
+
+@tool
+def calculate_bmi(weight_kg: float, height_cm: float) -> str:
+    """
+    Calculate Body Mass Index (BMI) and provide health category.
+    
+    Args:
+        weight_kg: Weight in kilograms
+        height_cm: Height in centimeters
+    
+    Returns:
+        BMI value and health category interpretation
+    """
+    try:
+        height_m = height_cm / 100
+        bmi = weight_kg / (height_m ** 2)
+        
+        if bmi < 18.5:
+            category = "Underweight"
+            advice = "Consider consulting a nutritionist for healthy weight gain."
+        elif 18.5 <= bmi < 25:
+            category = "Normal weight"
+            advice = "Great! Maintain your healthy lifestyle."
+        elif 25 <= bmi < 30:
+            category = "Overweight"
+            advice = "Consider regular exercise and balanced diet."
+        else:
+            category = "Obese"
+            advice = "Please consult a doctor for personalized health plan."
+        
+        return f"""BMI Calculation Results:
+- BMI: {bmi:.1f}
+- Category: {category}
+- Recommendation: {advice}
+
+Note: BMI is a general indicator and doesn't account for muscle mass, age, or other factors."""
+    except Exception as e:
+        return f"Error calculating BMI: {str(e)}"
+
+
+@tool
+def get_emergency_guidance(symptom: str) -> str:
+    """
+    Provide immediate guidance for emergency symptoms and when to seek urgent care.
+    Use this for serious symptoms like chest pain, severe bleeding, breathing problems.
+    
+    Args:
+        symptom: The emergency symptom being experienced
+    
+    Returns:
+        Emergency guidance and whether immediate medical attention is needed
+    """
+    emergency_keywords = {
+        'chest pain': '🚨 EMERGENCY: Call ambulance immediately (102/108). This could be a heart attack.',
+        'breathing': '🚨 EMERGENCY: Seek immediate medical help. Difficulty breathing requires urgent care.',
+        'severe bleeding': '🚨 EMERGENCY: Apply pressure to wound and call for emergency help immediately.',
+        'stroke': '🚨 EMERGENCY: Call 102/108 immediately. Remember FAST: Face drooping, Arm weakness, Speech difficulty, Time to call.',
+        'snake bite': '🚨 EMERGENCY: Keep calm, immobilize affected area, go to nearest hospital immediately.',
+        'poisoning': '🚨 EMERGENCY: Call poison control or go to emergency room immediately.',
+        'severe burn': '🚨 EMERGENCY: Cool with water, cover with clean cloth, seek immediate medical care.',
+        'unconscious': '🚨 EMERGENCY: Call 102/108, check breathing, put in recovery position if breathing.',
+    }
+    
+    symptom_lower = symptom.lower()
+    for keyword, guidance in emergency_keywords.items():
+        if keyword in symptom_lower:
+            return f"{guidance}\n\nEmergency Numbers India:\n- Ambulance: 102 or 108\n- Emergency: 112"
+    
+    return """Based on symptoms, if any of these apply, seek immediate care:
+- Severe pain (chest, abdomen, head)
+- Difficulty breathing
+- Heavy bleeding
+- Loss of consciousness
+- High fever with confusion
+- Severe allergic reaction
+
+Call 102, 108, or 112 for emergency services in India."""
+
+
+@tool
+def search_nearby_facilities(location: str, facility_type: str = "hospital") -> str:
+    """
+    Help find nearby healthcare facilities like hospitals, clinics, or pharmacies.
+    
+    Args:
+        location: City, district, or area name
+        facility_type: Type of facility (hospital, clinic, pharmacy, diagnostic_center)
+    
+    Returns:
+        Information about how to find nearby healthcare facilities
+    """
+    return f"""To find {facility_type}s near {location}:
+
+1. Google Maps: Search "{facility_type} near {location}"
+2. Call 108 (Ambulance) - they can direct you to nearest facility
+3. Use Practo or 1mg app for hospitals/clinics/pharmacies
+4. Government Health Helpline: 104 (medical advice)
+
+For Primary Health Centers (PHC):
+- Visit your local PHC for free/subsidized care
+- Ask your village Sarpanch for nearest PHC location
+
+For emergencies, call 102 or 108 immediately."""
+
+
+@tool
+def general_health_tips(topic: str) -> str:
+    """
+    Provide evidence-based health tips on nutrition, exercise, hygiene, 
+    preventive care, and healthy lifestyle habits.
+    
+    Args:
+        topic: Health topic like nutrition, exercise, hygiene, mental health, etc.
+    
+    Returns:
+        Practical health tips and recommendations
+    """
+    tips_database = {
+        'nutrition': """Healthy Eating Tips:
+- Eat variety: Include grains, pulses, vegetables, fruits
+- Traditional Indian diet (dal-roti-sabzi) is well-balanced
+- Drink 8-10 glasses of water daily
+- Limit sugar, salt, and fried foods
+- Include seasonal fruits and vegetables
+- Don't skip breakfast""",
+        
+        'exercise': """Physical Activity Guidelines:
+- 30 minutes of activity daily (walking, yoga, cycling)
+- Traditional exercises: Surya Namaskar, yoga asanas
+- Farming and household work also count as exercise
+- Start slowly and gradually increase
+- Stay hydrated during activity""",
+        
+        'hygiene': """Hygiene Best Practices:
+- Wash hands with soap before eating and after toilet
+- Drink clean, boiled/filtered water
+- Keep surroundings clean to prevent mosquitoes
+- Take regular baths
+- Trim nails regularly
+- Cover mouth when coughing/sneezing""",
+        
+        'mental health': """Mental Wellness Tips:
+- Talk to trusted friends/family about feelings
+- Practice deep breathing or meditation
+- Maintain regular sleep schedule
+- Stay connected with community
+- Seek help if feeling very sad/anxious
+- Helpline: KIRAN 1800-599-0019 (mental health)"""
+    }
+    
+    topic_lower = topic.lower()
+    for key, tips in tips_database.items():
+        if key in topic_lower:
+            return tips
+    
+    return "For specific health tips, please mention: nutrition, exercise, hygiene, or mental health."
+
+
+# ==================== SYSTEM PROMPT ====================
+
+ENHANCED_MEDICAL_PROMPT = """You are SwasthAI, an advanced AI medical assistant specifically designed for rural healthcare in India. You have access to multiple tools to provide accurate, up-to-date medical information.
+
+YOUR TOOLS & WHEN TO USE THEM:
+1. search_medical_info: For current medical information, treatments, latest research
+2. search_wikipedia_medical: For detailed disease/condition information
+3. check_drug_interactions: When patients mention medications
+4. calculate_bmi: When weight and height are provided
+5. get_emergency_guidance: For ANY potentially serious symptoms
+6. search_nearby_facilities: When patients need to find healthcare facilities
+7. general_health_tips: For preventive care and healthy lifestyle advice
+
+IMPORTANT INSTRUCTIONS:
+- ALWAYS use get_emergency_guidance first if symptoms sound serious
+- Use search_medical_info for recent health information
+- Use Wikipedia for comprehensive background on medical conditions
+- Be proactive in using tools - don't just rely on your training data
+- When multiple tools are relevant, use them to provide comprehensive answers
+- After using tools, synthesize the information in simple, empathetic language
+
+YOUR APPROACH:
+1. Listen carefully and identify if emergency guidance is needed
+2. Use appropriate tools to gather information
+3. Combine tool results with your medical knowledge
+4. Explain in simple Hindi-English mix (Hinglish) when helpful
+5. Always be empathetic and culturally sensitive
+6. Clarify that you provide guidance, not diagnosis
+
+RED FLAGS (Use get_emergency_guidance immediately):
+- Chest pain, breathing difficulty
+- Severe bleeding, injuries
+- Snake bites, poisoning
+- High fever with confusion
+- Stroke symptoms
+- Severe abdominal pain
+- Pregnancy complications
 
 Communication Style:
-- Friendly and warm, like talking to a trusted healthcare worker
+- Warm and friendly, like a trusted healthcare worker
 - Break complex information into simple steps
-- Use examples and analogies that rural communities understand
-- Ask one question at a time
-- Acknowledge feelings and concerns
+- Use examples rural communities understand
+- Show empathy and acknowledge concerns
+- Encourage seeking professional care when needed
 
-Red Flags (Always recommend urgent medical attention):
-- Severe chest pain or breathing difficulty
-- High fever with stiff neck or confusion
-- Severe bleeding or injuries
-- Snake bites or poisoning
-- Severe abdominal pain
-- Signs of stroke (facial drooping, arm weakness, speech difficulty)
-- Pregnancy complications
-- Severe dehydration in children
+Remember: You're an intelligent assistant with access to current information. Use your tools wisely to provide the best possible guidance while being clear about limitations."""
 
-Remember: You are a supportive first point of contact, not a replacement for doctors. Your goal is to educate, guide, and help people make informed healthcare decisions."""
 
+# ==================== AGENT STATE ====================
 
 class AgentState(TypedDict):
-    """State of the conversation agent"""
+    """Enhanced state with tool support"""
     messages: Annotated[Sequence[BaseMessage], operator.add]
     conversation_history: List[Dict[str, str]]
 
 
-class SwasthAIAgent:
+# ==================== SWASTHAI AGENT ====================
+
+class EnhancedSwasthAIAgent:
     """
-    SwasthAI Medical Assistant Agent using LangGraph
-    Provides intelligent, context-aware medical guidance
+    Enhanced SwasthAI Medical Assistant with Tool Calling
+    Uses Gemini 2.5 Flash with function calling for intelligent responses
     """
     
     def __init__(self):
-        """Initialize the AI agent with selected provider"""
+        """Initialize the enhanced AI agent"""
+        self.tools = self._initialize_tools()
         self.llm = self._initialize_llm()
         self.graph = self._build_graph()
     
+    def _initialize_tools(self):
+        """Initialize all available tools"""
+        return [
+            search_medical_info,
+            search_wikipedia_medical,
+            check_drug_interactions,
+            calculate_bmi,
+            get_emergency_guidance,
+            search_nearby_facilities,
+            general_health_tips,
+        ]
+    
     def _initialize_llm(self):
-        """Initialize the language model based on configuration"""
-        if settings.AI_PROVIDER == "gemini":
-            if not settings.GOOGLE_API_KEY:
-                raise ValueError("GOOGLE_API_KEY not set in environment")
-            try:
-                return ChatGoogleGenerativeAI(
-                    model="gemini-2.5-flash",  # Using stable gemini-2.5-flash model
-                    google_api_key=settings.GOOGLE_API_KEY,
-                    temperature=0.7,
-                    max_output_tokens=1000,
-                    convert_system_message_to_human=True  # Important for compatibility
-                )
-            except Exception as e:
-                print(f"Warning: Failed to initialize Gemini: {e}")
-                print("Falling back to a simple response system")
-                raise ValueError(f"Gemini initialization failed: {e}")
-        else:  # default to OpenAI
-            if not settings.OPENAI_API_KEY:
-                raise ValueError("OPENAI_API_KEY not set in environment")
-            return ChatOpenAI(
-                model="gpt-3.5-turbo",
+        """Initialize Gemini with function calling"""
+        if not settings.GOOGLE_API_KEY:
+            raise ValueError("GOOGLE_API_KEY not set in environment")
+        
+        try:
+            llm = ChatGoogleGenerativeAI(
+                model="gemini-2.5-flash",
+                google_api_key=settings.GOOGLE_API_KEY,
                 temperature=0.7,
-                max_tokens=500,
-                api_key=settings.OPENAI_API_KEY
+                max_output_tokens=2000,
+                convert_system_message_to_human=True
             )
+            # Bind tools to the LLM
+            return llm.bind_tools(self.tools)
+        except Exception as e:
+            raise ValueError(f"Failed to initialize Gemini: {e}")
     
     def _build_graph(self) -> StateGraph:
-        """Build the conversation flow graph using LangGraph"""
+        """Build the conversation flow graph with tool support"""
         
-        # Define the agent node
-        def agent_node(state: AgentState) -> AgentState:
-            """Process user message and generate response"""
+        def should_continue(state: AgentState) -> str:
+            """Determine if tools should be called"""
+            messages = state["messages"]
+            last_message = messages[-1]
+            
+            # If the LLM makes a tool call, route to tools
+            if hasattr(last_message, 'tool_calls') and last_message.tool_calls:
+                return "tools"
+            # Otherwise, end
+            return "end"
+        
+        def call_model(state: AgentState) -> AgentState:
+            """Call the LLM with tool support"""
             messages = state["messages"]
             
-            # Add system prompt at the beginning
-            full_messages = [SystemMessage(content=MEDICAL_ASSISTANT_PROMPT)] + list(messages)
+            # Add system prompt
+            full_messages = [SystemMessage(content=ENHANCED_MEDICAL_PROMPT)] + list(messages)
             
-            # Get response from LLM
+            # Get response from LLM (may include tool calls)
             response = self.llm.invoke(full_messages)
             
             return {
@@ -118,38 +391,49 @@ class SwasthAIAgent:
         workflow = StateGraph(AgentState)
         
         # Add nodes
-        workflow.add_node("agent", agent_node)
+        workflow.add_node("agent", call_model)
+        workflow.add_node("tools", ToolNode(self.tools))
         
         # Set entry point
         workflow.set_entry_point("agent")
         
-        # Add edge to end
-        workflow.add_edge("agent", END)
+        # Add conditional edges
+        workflow.add_conditional_edges(
+            "agent",
+            should_continue,
+            {
+                "tools": "tools",
+                "end": END
+            }
+        )
+        
+        # Tools always go back to agent
+        workflow.add_edge("tools", "agent")
         
         # Compile the graph
         return workflow.compile()
     
     def chat(self, user_message: str, conversation_history: List[Dict[str, str]] = None) -> str:
         """
-        Process a user message and return AI response
+        Process user message with tool support
         
         Args:
             user_message: The user's message
-            conversation_history: Previous messages in format [{"role": "user/assistant", "content": "..."}]
+            conversation_history: Previous conversation context
         
         Returns:
-            AI assistant's response
+            AI assistant's response (may include tool results)
         """
-        # Convert conversation history to LangChain messages
+        # Convert conversation history
         messages = []
         if conversation_history:
-            for msg in conversation_history[-10:]:  # Keep last 10 messages for context
+            for msg in conversation_history[-10:]:
                 if msg["role"] == "user":
                     messages.append(HumanMessage(content=msg["content"]))
                 elif msg["role"] == "assistant":
                     messages.append(AIMessage(content=msg["content"]))
         
-        # Add current user message
+        # Add current message
         messages.append(HumanMessage(content=user_message))
         
         # Run the graph
@@ -160,41 +444,78 @@ class SwasthAIAgent:
         
         result = self.graph.invoke(state)
         
-        # Extract AI response
-        ai_message = result["messages"][-1]
-        return ai_message.content
+        # Extract final AI response
+        for message in reversed(result["messages"]):
+            if isinstance(message, AIMessage) and message.content:
+                return message.content
+        
+        return "I apologize, I couldn't process that. Could you please rephrase?"
     
     def get_greeting(self) -> str:
-        """Get a friendly greeting message"""
-        return """Namaste! 🙏 I'm SwasthAI, your friendly AI medical assistant.
+        """Get enhanced greeting message"""
+        return """Namaste! 🙏 I'm SwasthAI, your intelligent AI medical assistant.
 
-I'm here to help you with:
-- Understanding your symptoms
-- General health guidance
+I now have access to:
+✅ Current medical research and information
+✅ Detailed disease and condition database (Wikipedia)
+✅ Drug interaction checker
+✅ BMI calculator
+✅ Emergency guidance system
+✅ Healthcare facility locator
+✅ Evidence-based health tips
+
+I can help you with:
+- Understanding symptoms and conditions
+- Checking medication information
+- Emergency guidance
+- Finding nearby healthcare
+- General health advice
 - When to see a doctor
-- Basic health tips
 
-How can I help you today? Feel free to tell me about any health concerns you have."""
-
-
-# Global agent instance
-_agent_instance = None
+How can I assist you today? 🏥"""
 
 
-def get_agent() -> SwasthAIAgent:
-    """Get or create the global agent instance"""
-    global _agent_instance
-    if _agent_instance is None:
-        _agent_instance = SwasthAIAgent()
-    return _agent_instance
+# Global enhanced agent instance
+_enhanced_agent = None
 
 
-# Test the agent
+def get_enhanced_agent() -> EnhancedSwasthAIAgent:
+    """Get or create the global enhanced agent"""
+    global _enhanced_agent
+    if _enhanced_agent is None:
+        _enhanced_agent = EnhancedSwasthAIAgent()
+    return _enhanced_agent
+
+
+# Backward compatibility alias
+def get_agent() -> EnhancedSwasthAIAgent:
+    """Get or create the global agent (backward compatibility)"""
+    return get_enhanced_agent()
+
+
+# ==================== TESTING ====================
+
 if __name__ == "__main__":
-    agent = SwasthAIAgent()
-    print("SwasthAI Agent initialized successfully!")
-    print("\n" + agent.get_greeting())
+    print("Initializing Enhanced SwasthAI Agent...")
+    agent = EnhancedSwasthAIAgent()
+    print("✅ Agent initialized successfully!\n")
+    print(agent.get_greeting())
     
-    # Test conversation
-    response = agent.chat("I have a headache and mild fever since yesterday")
-    print(f"\nAI: {response}")
+    # Test conversations
+    test_queries = [
+        "I have chest pain and difficulty breathing",
+        "What are the symptoms of dengue fever?",
+        "Can you calculate my BMI? I weigh 70 kg and my height is 175 cm",
+        "I'm taking aspirin daily. What should I know about it?",
+    ]
+    
+    print("\n" + "="*60)
+    print("TESTING ENHANCED AGENT WITH TOOL CALLING")
+    print("="*60 + "\n")
+    
+    for query in test_queries:
+        print(f"\n👤 User: {query}")
+        print(f"🤖 SwasthAI: ", end="", flush=True)
+        response = agent.chat(query)
+        print(response)
+        print("-" * 60)

@@ -12,25 +12,27 @@ document.getElementById('signupForm').addEventListener('submit', async (e) => {
     const submitBtn = document.getElementById('submitBtn');
     
     // Clear previous messages
-    errorMsg.classList.remove('show');
-    successMsg.classList.remove('show');
+    errorMsg.className = '';
+    errorMsg.textContent = '';
+    successMsg.className = '';
+    successMsg.textContent = '';
     
     // Validation
     if (password !== confirmPassword) {
-        errorMsg.textContent = 'Passwords do not match';
-        errorMsg.classList.add('show');
+        errorMsg.className = 'alert alert-danger';
+        errorMsg.innerHTML = '<i class="bi bi-exclamation-triangle me-2"></i>Passwords do not match';
         return;
     }
     
     if (password.length < 6) {
-        errorMsg.textContent = 'Password must be at least 6 characters';
-        errorMsg.classList.add('show');
+        errorMsg.className = 'alert alert-danger';
+        errorMsg.innerHTML = '<i class="bi bi-exclamation-triangle me-2"></i>Password must be at least 6 characters';
         return;
     }
     
     // Disable button
     submitBtn.disabled = true;
-    submitBtn.textContent = 'Creating Account...';
+    submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Creating Account...';
     
     try {
         const response = await fetch('/api/signup', {
@@ -51,25 +53,25 @@ document.getElementById('signupForm').addEventListener('submit', async (e) => {
             // Save token
             localStorage.setItem('token', data.access_token);
             
-            successMsg.textContent = 'Account created successfully! Redirecting...';
-            successMsg.classList.add('show');
+            successMsg.className = 'alert alert-success';
+            successMsg.innerHTML = '<i class="bi bi-check-circle me-2"></i>Account created successfully! Redirecting...';
             
             // Redirect to chat
             setTimeout(() => {
                 window.location.href = '/chat';
             }, 1500);
         } else {
-            errorMsg.textContent = data.detail || 'Signup failed. Please try again.';
-            errorMsg.classList.add('show');
+            errorMsg.className = 'alert alert-danger';
+            errorMsg.innerHTML = '<i class="bi bi-exclamation-circle me-2"></i>' + (data.detail || 'Signup failed. Please try again.');
             submitBtn.disabled = false;
-            submitBtn.textContent = 'Create Account';
+            submitBtn.innerHTML = '<i class="bi bi-person-plus me-2"></i>Create Account';
         }
     } catch (error) {
         console.error('Signup error:', error);
-        errorMsg.textContent = 'Network error. Please check your connection.';
-        errorMsg.classList.add('show');
+        errorMsg.className = 'alert alert-danger';
+        errorMsg.innerHTML = '<i class="bi bi-wifi-off me-2"></i>Network error. Please check your connection.';
         submitBtn.disabled = false;
-        submitBtn.textContent = 'Create Account';
+        submitBtn.innerHTML = '<i class="bi bi-person-plus me-2"></i>Create Account';
     }
 });
 
