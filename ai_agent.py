@@ -32,13 +32,22 @@ def search_medical_info(query: str) -> str:
         Relevant medical information from reliable sources
     """
     try:
-        search = DuckDuckGoSearchRun()
-        # Add medical context to query for better results
-        enhanced_query = f"medical health {query} site:mayoclinic.org OR site:webmd.com OR site:nih.gov OR site:who.int"
-        result = search.run(enhanced_query)
-        return f"Medical Information:\n{result}"
+        from duckduckgo_search import DDGS
+        
+        # Use DDGS directly for better reliability
+        with DDGS() as ddgs:
+            results = ddgs.text(f"medical health {query}", max_results=3)
+            if results:
+                formatted_results = []
+                for i, result in enumerate(results[:3], 1):
+                    formatted_results.append(f"{i}. {result.get('title', 'N/A')}\n   {result.get('body', 'N/A')}")
+                return f"Medical Information Search Results:\n\n" + "\n\n".join(formatted_results)
+            else:
+                return f"No search results found for '{query}'. I'll provide information from my medical knowledge base."
+    except ImportError:
+        return f"Search functionality temporarily unavailable. I'll provide information about {query} from my medical knowledge base."
     except Exception as e:
-        return f"Unable to search medical information: {str(e)}"
+        return f"Search temporarily unavailable: {str(e)}. I'll provide information about {query} from my medical knowledge base."
 
 
 @tool

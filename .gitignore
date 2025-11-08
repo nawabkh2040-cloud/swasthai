@@ -207,3 +207,4 @@ marimo/_static/
 marimo/_lsp/
 __marimo__/
 .history/.env_20251104202938
+swasthai.db
