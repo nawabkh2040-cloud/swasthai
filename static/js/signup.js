@@ -17,6 +17,13 @@ document.getElementById('signupForm').addEventListener('submit', async (e) => {
     successMsg.className = '';
     successMsg.textContent = '';
     
+    // Check if username is marked as invalid
+    if (usernameInput.classList.contains('is-invalid')) {
+        errorMsg.className = 'alert alert-danger';
+        errorMsg.innerHTML = '<i class="bi bi-exclamation-triangle me-2"></i>Please choose a valid username';
+        return;
+    }
+    
     // Validation
     if (password !== confirmPassword) {
         errorMsg.className = 'alert alert-danger';
@@ -82,11 +89,21 @@ document.getElementById('signupForm').addEventListener('submit', async (e) => {
             let errorMessage = 'Signup failed. Please try again.';
             
             console.log('Error data.detail:', data.detail);
+            console.log('Error data.error:', data.error);
             console.log('Type of data.detail:', typeof data.detail);
             
-            if (data.detail) {
+            // Check for error message in data.error first (our custom errors)
+            if (data.error) {
+                errorMessage = data.error;
+            } else if (data.detail) {
                 if (typeof data.detail === 'string') {
-                    errorMessage = data.detail;
+                    // If detail is a string, check if it's a status code or actual message
+                    if (!isNaN(data.detail) || data.detail === '400' || data.detail === '422') {
+                        // It's a status code, use generic message or check data.error
+                        errorMessage = data.error || 'Invalid input. Please check your information.';
+                    } else {
+                        errorMessage = data.detail;
+                    }
                 } else if (Array.isArray(data.detail)) {
                     // Handle validation errors from FastAPI
                     console.log('Array of errors:', data.detail);
@@ -112,8 +129,6 @@ document.getElementById('signupForm').addEventListener('submit', async (e) => {
                         errorMessage = 'Invalid input. Please check your information.';
                     }
                 }
-            } else if (data.error) {
-                errorMessage = data.error;
             }
             
             errorMsg.className = 'alert alert-danger';
@@ -130,7 +145,102 @@ document.getElementById('signupForm').addEventListener('submit', async (e) => {
     }
 });
 
-// Auto-resize username to lowercase
-document.getElementById('username').addEventListener('input', (e) => {
+// Auto-resize username to lowercase and check availability
+let usernameCheckTimeout;
+const usernameInput = document.getElementById('username');
+const usernameGroup = usernameInput.closest('.input-group');
+
+usernameInput.addEventListener('input', (e) => {
     e.target.value = e.target.value.toLowerCase();
+    
+    // Clear previous timeout
+    clearTimeout(usernameCheckTimeout);
+    
+    // Remove previous validation classes
+    usernameInput.classList.remove('is-valid', 'is-invalid');
+    
+    const username = e.target.value.trim();
+    
+    // Don't check if username is too short
+    if (username.length < 3) {
+        return;
+    }
+    
+    // Debounce the API call
+    usernameCheckTimeout = setTimeout(async () => {
+        await checkUsernameAvailability(username);
+    }, 500); // Wait 500ms after user stops typing
 });
+
+async function checkUsernameAvailability(username) {
+    // Show checking state
+    usernameInput.classList.remove('is-valid', 'is-invalid');
+    
+    // Add a small loading indicator
+    let feedback = usernameGroup.parentElement.querySelector('.username-checking');
+    if (!feedback) {
+        feedback = document.createElement('div');
+        feedback.className = 'username-checking text-muted';
+        feedback.style.fontSize = '0.875rem';
+        feedback.style.marginTop = '0.25rem';
+        usernameGroup.parentElement.appendChild(feedback);
+    }
+    feedback.innerHTML = '<i class="bi bi-arrow-repeat spin me-1"></i>Checking availability...';
+    feedback.style.display = 'block';
+    
+    try {
+        const response = await fetch(`/api/check-username/${encodeURIComponent(username)}`);
+        const data = await response.json();
+        
+        // Remove checking indicator
+        feedback.style.display = 'none';
+        
+        if (data.available) {
+            // Username is available - show green
+            usernameInput.classList.remove('is-invalid');
+            usernameInput.classList.add('is-valid');
+            
+            // Update or create feedback message
+            let validFeedback = usernameGroup.parentElement.querySelector('.valid-feedback');
+            if (!validFeedback) {
+                validFeedback = document.createElement('div');
+                validFeedback.className = 'valid-feedback';
+                validFeedback.style.display = 'block';
+                usernameGroup.parentElement.appendChild(validFeedback);
+            }
+            validFeedback.innerHTML = '<i class="bi bi-check-circle me-1"></i>' + data.message;
+            
+            // Remove invalid feedback if exists
+            const invalidFeedback = usernameGroup.parentElement.querySelector('.invalid-feedback');
+            if (invalidFeedback) {
+                invalidFeedback.remove();
+            }
+        } else {
+            // Username is not available - show red
+            usernameInput.classList.remove('is-valid');
+            usernameInput.classList.add('is-invalid');
+            
+            // Update or create feedback message
+            let invalidFeedback = usernameGroup.parentElement.querySelector('.invalid-feedback');
+            if (!invalidFeedback) {
+                invalidFeedback = document.createElement('div');
+                invalidFeedback.className = 'invalid-feedback';
+                invalidFeedback.style.display = 'block';
+                usernameGroup.parentElement.appendChild(invalidFeedback);
+            }
+            invalidFeedback.innerHTML = '<i class="bi bi-x-circle me-1"></i>' + data.message;
+            
+            // Remove valid feedback if exists
+            const validFeedback = usernameGroup.parentElement.querySelector('.valid-feedback');
+            if (validFeedback) {
+                validFeedback.remove();
+            }
+        }
+    } catch (error) {
+        console.error('Error checking username:', error);
+        // Remove checking indicator
+        feedback.style.display = 'none';
+        // Don't show error to user, just silently fail
+        usernameInput.classList.remove('is-valid', 'is-invalid');
+    }
+}

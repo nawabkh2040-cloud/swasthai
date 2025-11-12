@@ -479,6 +479,30 @@ async def health_check():
     }
 
 
+@app.get("/api/check-username/{username}")
+async def check_username_availability(username: str, db: Session = Depends(get_db)):
+    """
+    Check if username is available (for real-time validation)
+    """
+    # Validate username format
+    if len(username) < 3:
+        return {"available": False, "message": "Username must be at least 3 characters"}
+    
+    if not username.replace('_', '').replace('-', '').isalnum():
+        return {"available": False, "message": "Username can only contain letters, numbers, underscore and hyphen"}
+    
+    if '@' in username or '.' in username:
+        return {"available": False, "message": "Please use a username, not an email address"}
+    
+    # Check if username exists
+    existing_user = db.query(User).filter(User.username == username.lower()).first()
+    
+    if existing_user:
+        return {"available": False, "message": "Username already taken"}
+    
+    return {"available": True, "message": "Username available"}
+
+
 # ==================== ERROR HANDLERS ====================
 
 @app.exception_handler(HTTPException)
