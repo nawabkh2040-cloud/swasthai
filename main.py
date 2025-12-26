@@ -114,6 +114,18 @@ async def sitemap():
     return FileResponse("static/sitemap.xml", media_type="application/xml")
 
 
+@app.get("/ads.txt")
+async def ads_txt():
+    """Serve ads.txt for AdSense verification"""
+    from fastapi.responses import FileResponse, PlainTextResponse
+    # Prefer project root ads.txt, fallback to static/ads.txt
+    if os.path.exists("ads.txt"):
+        return FileResponse("ads.txt", media_type="text/plain")
+    if os.path.exists(os.path.join("static", "ads.txt")):
+        return FileResponse(os.path.join("static", "ads.txt"), media_type="text/plain")
+    return PlainTextResponse("", status_code=404)
+
+
 @app.get("/about", response_class=HTMLResponse)
 async def about_page(request: Request):
     """About Us page"""
